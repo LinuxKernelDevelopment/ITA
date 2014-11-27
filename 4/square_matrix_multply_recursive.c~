@@ -96,8 +96,13 @@ void square_matrix_multiply(int *a1, int *b1, int num, int *c)
 		square_matrix_multiply(a11, b11, num / 2, c11a);
 		square_matrix_multiply(a12, b21, num / 2, c11b);
 		square_matrix_add(c11a, c11b, c11, num / 2);
+<<<<<<< HEAD
 		//printf("c11:\n");
 		//debug_matrix(c11, num / 2);
+=======
+		printf("c11:\n");
+		debug_matrix(c11, num / 2);
+>>>>>>> 479cdf381650f3f01d433acdc3a47477ded4670c
 				
 		c12a = malloc(sizeof(int) * (num / 2) * (num / 2));
                 c12b = malloc(sizeof(int) * (num / 2) * (num / 2));
@@ -133,4 +138,9 @@ void square_matrix_multiply(int *a1, int *b1, int num, int *c)
 				if (i + 1 > num / 2 && j + 1 > num / 2)  *(c + i * num + j) = *(c22 + (i - num/2) * num / 2 + (j - num/2));
 			}
 	}
+<<<<<<< HEAD
+	printf("c:\n");
+	debug_matrix(c, num);
+=======
+>>>>>>> 479cdf381650f3f01d433acdc3a47477ded4670c
 }
