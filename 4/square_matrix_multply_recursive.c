@@ -18,10 +18,6 @@ main(int argc, char *argv[])
 	c = malloc(sizeof(int *) * 4);
 	for (i = 0; i < 4; i++)
 		c[i] = malloc(sizeof(int) * 4);
-	/*square_matrix_add(a, b, c, 4);
-	for (i = 0; i < 4; i++)
-		for (j = 0; j < 4; j++)
-			printf("%d\t", *((int *)c + i * 4 + j));*/
 	square_matrix_multiply(a, b, 4, c);
 	debug_matrix(c, 4);
 	return 0;
@@ -47,8 +43,6 @@ void debug_matrix(int *a, int num)
 int tmp[4][4];
 void square_matrix_multiply(int *a1, int *b1, int num, int *c)
 {
-	debug_matrix(a1, num);
-	debug_matrix(b1, num);
 	int n = num, i, j;
 	int *a11, *a12, *a21, *a22;
 	int *b11, *b12, *b21, *b22;
@@ -72,30 +66,25 @@ void square_matrix_multiply(int *a1, int *b1, int num, int *c)
 				{
 					*(a11 + i * num / 2 + j) = *(a1 + i * num + j);
 					 *(b11 + i * num / 2 + j) = *(b1 + i * num + j);
-					printf("a11\ti:%d\tj:%d\n", i, j);
 				}
 				if (i + 1 <= num / 2 && j + 1 > num / 2) 
 				{
 					*(a12 + i * num / 2+ (j - num/2)) = *(a1 + i * num + j);
 					*(b12 + i * num / 2+ (j - num/2)) = *(b1 + i * num + j);
-					printf("a12\ti:%d\tj:%d\n", i, j);
 				}
 				if (i + 1 > num / 2 && j + 1 <= num / 2) 
 				{
 					*(a21 + (i - num / 2) * num / 2 + j) = *(a1 + i * num + j);
 					*(b21 + (i - num / 2) * num / 2 + j) = *(b1 + i * num + j);
-					printf("a21\ti:%d\tj:%d\n", i, j);
 				}
 				if (i + 1 > num / 2 && j + 1 > num / 2) 
 				{
 					*(a22 + (i - num / 2) * num / 2 + (j - num / 2)) = *(a1 + i * num + j);
 					*(b22 + (i - num / 2) * num / 2 + (j - num / 2)) = *(b1 + i * num + j);
-					printf("a22\ti:%d\tj:%d\n", i, j);
 				}
 			}
 		}
 
-		printf("haha\n");			
 		c11a = malloc(sizeof(int) * (num / 2) * (num / 2));
 		c11b = malloc(sizeof(int) * (num / 2) * (num / 2));
 		c11 = malloc(sizeof(int) * (num / 2) * (num / 2));
@@ -103,6 +92,8 @@ void square_matrix_multiply(int *a1, int *b1, int num, int *c)
 		square_matrix_multiply(a11, b11, num / 2, c11a);
 		square_matrix_multiply(a12, b21, num / 2, c11b);
 		square_matrix_add(c11a, c11b, c11, num / 2);
+		//printf("c11:\n");
+		//debug_matrix(c11, num / 2);
 				
 		c12a = malloc(sizeof(int) * (num / 2) * (num / 2));
                 c12b = malloc(sizeof(int) * (num / 2) * (num / 2));
@@ -127,12 +118,15 @@ void square_matrix_multiply(int *a1, int *b1, int num, int *c)
 		square_matrix_multiply(a21, b12, num / 2, c22a);                                                       
 		square_matrix_multiply(a12, b22, num / 2, c22b);                                                       
 		square_matrix_add(c22a, c22b, c22, num / 2);
+
+		
+		for (i = 0; i < num; i++)
+			for (j = 0; j < num; j++)
+			{
+				if (i + 1 <= num / 2 && j + 1 <= num / 2)  *(c + i * num + j) = *(c11 + i * num / 2 + j);
+				if (i + 1 <= num / 2 && j + 1 > num / 2)  *(c + i * num + j) = *(c12 + i * num / 2 + (j - num / 2));
+				if (i + 1 > num / 2 && j + 1 <= num / 2)  *(c + i * num + j) = *(c21 + (i - num/2) * num / 2 + j);
+				if (i + 1 > num / 2 && j + 1 > num / 2)  *(c + i * num + j) = *(c22 + (i - num/2) * num / 2 + (j - num/2));
+			}
 	}
-			
-	debug_matrix(c, num);
-	
-	/*debug_matrix(a11, num);
-	debug_matrix(a12, num);
-	debug_matrix(a21, num);
-	debug_matrix(a22, num);*/
 }
