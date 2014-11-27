@@ -36,7 +36,10 @@ void debug_matrix(int *a, int num)
 {
 	int i = 0;
 	for (i = 0; i < num * num; i++)
+	{
+		if (i % num == 0) printf("\n");
 		printf("%d\t", *(a + i));
+	}
 	printf("\n");
 }
 
@@ -48,10 +51,10 @@ void square_matrix_multiply(int *a1, int *b1, int num, int *c)
 	int *b11, *b12, *b21, *b22;
 	int *c11, *c12, *c21, *c22;
 	int *c11a, *c11b, *c12a, *c12b, *c21a, *c21b, *c22a, *c22b;
-	printf("a1:\n");
+	/*printf("a1:\n");
 	debug_matrix(a1, num);
 	printf("b1:\n");
-	debug_matrix(b1,num);
+	debug_matrix(b1,num);*/
 	if (n == 1)
 		*c = *a1 * *b1;
 	else {
@@ -120,7 +123,7 @@ void square_matrix_multiply(int *a1, int *b1, int num, int *c)
 		c22 = malloc(sizeof(int) * (num / 2) * (num / 2));
 		//computation C22
 		square_matrix_multiply(a21, b12, num / 2, c22a);                                                       
-		square_matrix_multiply(a12, b22, num / 2, c22b);                                                       
+		square_matrix_multiply(a22, b22, num / 2, c22b);                                                       
 		square_matrix_add(c22a, c22b, c22, num / 2);
 
 		
@@ -133,4 +136,6 @@ void square_matrix_multiply(int *a1, int *b1, int num, int *c)
 				if (i + 1 > num / 2 && j + 1 > num / 2)  *(c + i * num + j) = *(c22 + (i - num/2) * num / 2 + (j - num/2));
 			}
 	}
+	/*printf("c:\n");
+        debug_matrix(c, num);*/
 }
