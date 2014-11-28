@@ -18,8 +18,8 @@ main(int argc, char *argv[])
 	c = malloc(sizeof(int *) * 4);
 	for (i = 0; i < 4; i++)
 		c[i] = malloc(sizeof(int) * 4);
-	square_matrix_multiply((int *) a, (int *) b, 4, (int *) c);
-	debug_matrix((int *) c, 4);
+	square_matrix_multiply((int *)a, (int *)b, 4, (int *)c);
+	debug_matrix((int *)c, 4);
 	return 0;
 }
 
@@ -30,6 +30,14 @@ void square_matrix_add(int* a1, int* b1, int *c, int num)
 	for (i = 0; i < num; i++)
 		for (j = 0; j < num; j++)
 			*(c + i * num + j) = *(a1 + i * num + j) + *(b1 + i * num + j);	
+}
+
+void square_matrix_sub(int *a, int *b, int *c, int num)
+{
+	int i, j;
+	for (i = 0; i < num; i++)
+		for (j = 0; j < num; j++)
+			*(c + i * num + j) = *(a + i * num + j) - *(b + i * num + j);
 }
 
 void debug_matrix(int *a, int num)
@@ -50,7 +58,9 @@ void square_matrix_multiply(int *a1, int *b1, int num, int *c)
 	int *a11, *a12, *a21, *a22;
 	int *b11, *b12, *b21, *b22;
 	int *c11, *c12, *c21, *c22;
-	int *c11a, *c11b, *c12a, *c12b, *c21a, *c21b, *c22a, *c22b;
+	int *c5a4, *c5a4s2, *c5a1, *c5a1s3;
+	int *s[10];
+	int *p[7];
 	if (n == 1)
 		*c = *a1 * *b1;
 	else {
@@ -88,38 +98,53 @@ void square_matrix_multiply(int *a1, int *b1, int num, int *c)
 			}
 		}
 
-		c11a = malloc(sizeof(int) * (num / 2) * (num / 2));
-		c11b = malloc(sizeof(int) * (num / 2) * (num / 2));
+		for (i = 0; i < 10; i++)
+			s[i] = malloc(sizeof(int) * (num / 2) * (num / 2));
+		square_matrix_sub(b12, b22, s[0], num / 2);
+		square_matrix_add(a11, a12, s[1], num / 2);
+		square_matrix_add(a21, a22, s[2], num / 2);
+		square_matrix_sub(b21, b11, s[3], num / 2);
+		square_matrix_add(a11, a22, s[4], num / 2);
+		square_matrix_add(b11, b22, s[5], num / 2);
+		square_matrix_sub(a12, a22, s[6], num / 2);
+		square_matrix_add(b21, b22, s[7], num / 2);
+		square_matrix_sub(a11, a21, s[8], num / 2);
+		square_matrix_add(b11, b12, s[9], num / 2);
+
+		for (i = 0; i < 7; i++)
+			p[i] = malloc(sizeof(int) * (num / 2) * (num / 2));
+		square_matrix_multiply(a11, s[0], num / 2, p[0]);
+		square_matrix_multiply(s[1], b22, num / 2, p[1]);
+		square_matrix_multiply(s[2], b11, num / 2, p[2]);		
+		square_matrix_multiply(a22, s[3], num / 2, p[3]);
+		square_matrix_multiply(s[4], s[5], num / 2, p[4]);
+		square_matrix_multiply(s[6], s[7], num / 2, p[5]);
+		square_matrix_multiply(s[8], s[9], num / 2, p[6]);
+
+
 		c11 = malloc(sizeof(int) * (num / 2) * (num / 2));
 		//computation C11
-		square_matrix_multiply(a11, b11, num / 2, c11a);
-		square_matrix_multiply(a12, b21, num / 2, c11b);
-		square_matrix_add(c11a, c11b, c11, num / 2);
+		c5a4 = malloc(sizeof(int) * (num / 2) * (num / 2));
+		c5a4s2 = malloc(sizeof(int) * (num / 2) * (num / 2));
+		square_matrix_add(p[4], p[3], c5a4, num / 2);
+		square_matrix_sub(c5a4, p[1], c5a4s2, num / 2);
+		square_matrix_add(c5a4s2, p[5], c11, num / 2);
 				
-		c12a = malloc(sizeof(int) * (num / 2) * (num / 2));
-                c12b = malloc(sizeof(int) * (num / 2) * (num / 2));
                 c12 = malloc(sizeof(int) * (num / 2) * (num / 2));	
 		//computation C12
-		square_matrix_multiply(a11, b12, num / 2, c12a);                                                       
-		square_matrix_multiply(a12, b22, num / 2, c12b);                                                       
-		square_matrix_add(c12a, c12b, c12, num / 2);			
+		square_matrix_add(p[0], p[1], c12, num / 2);
 				
-		c21a = malloc(sizeof(int) * (num / 2) * (num / 2));
-		c21b = malloc(sizeof(int) * (num / 2) * (num / 2));
 		c21 = malloc(sizeof(int) * (num / 2) * (num / 2));
 		//computation C21
-		square_matrix_multiply(a21, b11, num / 2, c21a);                                                       
-		square_matrix_multiply(a22, b21, num / 2, c21b);                                                       
-		square_matrix_add(c21a, c21b, c21, num / 2);
+		square_matrix_add(p[2], p[3], c21, num / 2);
 
-		c22a = malloc(sizeof(int) * (num / 2) * (num / 2));
-		c22b = malloc(sizeof(int) * (num / 2) * (num / 2));
 		c22 = malloc(sizeof(int) * (num / 2) * (num / 2));
 		//computation C22
-		square_matrix_multiply(a21, b12, num / 2, c22a);                                                       
-		square_matrix_multiply(a22, b22, num / 2, c22b);                                                       
-		square_matrix_add(c22a, c22b, c22, num / 2);
-
+		c5a1 = malloc(sizeof(int) * (num / 2) * (num / 2));
+		c5a1s3 = malloc(sizeof(int) * (num / 2) * (num / 2));
+		square_matrix_add(p[4], p[0], c5a1, num / 2);
+		square_matrix_sub(c5a1, p[2], c5a1s3, num / 2);
+		square_matrix_sub(c5a1s3, p[6], c22, num / 2);
 		
 		for (i = 0; i < num; i++)
 			for (j = 0; j < num; j++)
