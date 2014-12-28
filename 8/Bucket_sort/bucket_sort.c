@@ -8,6 +8,28 @@ typedef struct Belement {
 } Blist;
 
 Blist *bucket_sort(float*, int);
+void list_insertion_sort(Blist*);
+
+void list_insertion_sort(Blist *Bl)
+{
+	struct list_head *prev, *now, *after, *tmp, *first;
+	prev = ((struct list_head *)Bl)->next;
+	now = prev->next;
+	after = now->next;
+	first = prev;
+	while (now != &Bl->list) {
+		__list_del(prev, after);
+		for (tmp = first; tmp != after; tmp = tmp->next) {
+			if (list_entry(tmp, Blist, list)->B > list_entry(now, Blist, list)->B) 
+				break;
+		}
+		tmp = tmp->prev;
+		__list_add(now, tmp, tmp->next);
+		prev = prev->next;
+		now = prev->next;
+		after = now->next;
+	}
+}
 
 
 Blist *bucket_sort(float *A, int n)
@@ -25,6 +47,9 @@ Blist *bucket_sort(float *A, int n)
 		tmp = malloc(sizeof(Blist));
 		tmp->B = A[i];
 		__list_add(&(tmp->list), &(Bl[p].list), Bl[p].list.next);
+	}
+	for (i = 0; i < n; i++) {
+		list_insertion_sort(&Bl[i]);
 	}
 	return Bl;
 }
