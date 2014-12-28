@@ -60,19 +60,23 @@ main(void)
 	Blist *blist;
 	Blist bli;
 	struct list_head *tmpb;
-	int i;
+	int i, t = 0;
 	float A[] = {0.78, 0.17, 0.39, 0.26, 0.72, 0.94, 0.21, 0.12, 0.23, 0.68};
-	blist = bucket_sort(A, sizeof(A) / sizeof(int));
+	float *result = malloc(sizeof(float) * (sizeof(A) / sizeof(float)));
+	blist = bucket_sort(A, sizeof(A) / sizeof(float));
 	for (i = 0; i < 10; i++) {
 		tmpb = (&blist[i].list)->next;
 		while (tmpb != &(blist[i].list)) {
-			printf("%d\t", i);
-			printf("%f\t", list_entry(tmpb, Blist, list)->B);
+			/*printf("%d\t", i);
+			printf("%f\t", list_entry(tmpb, Blist, list)->B);*/
+			result[t++] = list_entry(tmpb, Blist, list)->B;
 			tmpb = tmpb->next;
 		}
-		printf("\n");	
+		/*printf("\n");*/	
 	}
-
+	for (i = 0; i < sizeof(A) / sizeof(float); i++)
+		printf("%f\t", result[i]);
+	printf("\n");
 	return 0;
 }
 
