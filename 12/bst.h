@@ -6,6 +6,10 @@ typedef struct bst_node {
 	int	key;
 } bn;
 
+typedef struct bst_tree {
+	struct bst_node *root;
+} bt;
+
 void inorder_tree_walk(bn*);
 void inorder_tree_walk_nore(bn*);
 bn* tree_search(bn*, int);
@@ -16,3 +20,7 @@ bn* tree_successor(bn*);
 bn* tree_minimum_rec(bn*);
 bn* tree_maximum_rec(bn*);
 bn* tree_predecessor(bn*);
+void tree_insert(bt*, bn*);
+void transplant(bt*, bn*, bn*);
+void tree_delete(bt*, bn*);
+void tree_insert_rec(bt*, bn*);

@@ -104,3 +104,83 @@ bn* tree_predecessor(bn *x)
 	y = x->p;
 	return y;
 }
+
+void tree_insert(bt *T, bn *z)
+{
+	bn *y = NULL;
+	bn *x = T->root;
+	while (x != NULL) {
+		y = x;
+		if (z->key < x->key)
+			x = x->left;
+		else
+			x = x->right;
+	}
+	z->p = y;
+	if (y == NULL)
+		T->root = z;
+	else if (z->key < y->key)
+		y->left = z;
+	else
+		y->right = z;
+}
+
+void transplant(bt *T, bn *u, bn *v)
+{
+	if (u->p == NULL)
+		T->root = v;
+	else if (u == u->p->left)
+		u->p->left = v;
+	else 
+		u->p->right = v;
+	if (v != NULL)
+		v->p = u->p;
+}
+
+void tree_delete(bt *T, bn *z)
+{
+	bn *y;
+	if (z->left == NULL)
+		transplant(T, z, z->right);
+	else if (z->right == NULL)
+		transplant(T, z, z->left);
+	else {
+		y = tree_minimum(z->right);
+		if (y->p != z) {
+			transplant(T, y, y->right);
+			y->right = z->right;
+			y->right->p = y;
+		}
+		transplant(T, z, y);
+		y->left = z->left;
+		y->left->p = y;
+	}
+}
+
+void tree_insert_rec_done(bn *p, bn *x, bn *z)
+{
+	if (x == NULL) {
+		if (z->key < p->key) 
+			p->left = z;
+		else
+			p->right = z;
+		z->p = p;
+		return;
+	}
+	if (z->key < x->key) 
+		tree_insert_rec_done(x ,x->left, z);
+	else
+		tree_insert_rec_done(x, x->right, z);
+}
+
+void tree_insert_rec(bt *T, bn *z)
+{
+	bn *x = T->root;
+	if (x == NULL) {
+		T->root = z;
+		return;
+	}
+	tree_insert_rec_done(T->root->p, x, z);
+}
+
+	
