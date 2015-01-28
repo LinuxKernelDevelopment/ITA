@@ -24,12 +24,11 @@ main(void)
 	tmp->p = tmp->left = tmp->right = NULL;
 	tree_insert_rec(&root, tmp);
 	tmp = tree_search(root.root, 1991);
-	printf("%d\n", tree_successor(tmp)->key);
 	/*inorder_tree_walk(root.root);*/
 	printf("\n");
 	tree_delete(&root, tmp);
 	/*inorder_tree_walk(root.root);*/
-	/*inorder_tree_walk_nore(root.root);*/
+	inorder_tree_walk_nore(root.root);
 	printf("\n");
 	return 0;
 }
