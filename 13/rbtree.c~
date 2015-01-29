@@ -90,11 +90,11 @@ void rb_insert_fixup(rbt *T, rbn* z)
 				z = z->p->p;
 			} else if (z == z->p->right) {
 				z = z->p;
-				right_rotate(T, z);
+				left_rotate(T, z);
 			}
 			z->p->color = BLACK;
 			z->p->p->color = RED;
-			left_rotate(T, z->p->p);
+			right_rotate(T, z->p->p);
 		}
 	}
 	T->root->color = BLACK;

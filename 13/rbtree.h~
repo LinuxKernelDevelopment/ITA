@@ -17,4 +17,4 @@ void rb_insert(rbt*, rbn*);
 void rb_insert_fixup(rbt*, rbn*);
 
 #define	RED		1
-#define	BLACK	0
+#define	BLOCK	0
