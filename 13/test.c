@@ -6,17 +6,18 @@ int
 main(void)
 {
 	rbt root;
+	root.root = NULL;
 	int i;
-	int key[] = { 1, 2, 4, 5, 7, 8, 11, 14, 15};
 	rbn nil = { BLACK, 0, NULL, NULL, NULL};
 	root.nil = &nil;
 	root.root = &nil;
 	rbn *tmp;
-	for (i = 0; i < 9; i++) {
+	srand((unsigned int) 910216);
+	for (i = 0; i < 0216 * 0216; i++) {
 		tmp = malloc(sizeof(rbn));
-		tmp->key = key[i];
+		tmp->key = rand() % 910216;
 		rb_insert(&root, tmp);
+		printf("insert:%d\n", tmp->key);
 	}
-	printf("\n");
 	return 0;
 }

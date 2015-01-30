@@ -74,27 +74,32 @@ void rb_insert_fixup(rbt *T, rbn* z)
 				z->p->p->color = RED;
 				z = z->p->p;
 			}
-			else if (z == z->p->right) {
-				z = z->p;
-				left_rotate(T, z);
+			else 
+			{
+				if (z == z->p->right) {
+					z = z->p;
+					left_rotate(T, z);
+				}
+				z->p->color = BLACK;
+				z->p->p->color = RED;
+				right_rotate(T, z->p->p);
 			}
-			z->p->color = BLACK;
-			z->p->p->color = RED;
-			right_rotate(T, z->p->p);
 		} else {
 			y = z->p->p->left;
 			if (y->color == RED) {
 				z->p->color = BLACK;
 				y->color = BLACK;
-				y->p->p->color = RED;
+				z->p->p->color = RED;
 				z = z->p->p;
-			} else if (z == z->p->right) {
-				z = z->p;
-				right_rotate(T, z);
+			} else {
+				if (z == z->p->left) {
+					z = z->p;
+					right_rotate(T, z);
+				}
+				z->p->color = BLACK;
+				z->p->p->color = RED;
+				left_rotate(T, z->p->p);
 			}
-			z->p->color = BLACK;
-			z->p->p->color = RED;
-			left_rotate(T, z->p->p);
 		}
 	}
 	T->root->color = BLACK;
