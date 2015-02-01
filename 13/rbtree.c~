@@ -58,6 +58,9 @@ void rb_insert(rbt *T, rbn *z)
 	z->right = T->nil;
 	z->color = RED;
 	rb_insert_fixup(T, z);
+	if (z->key == 324096) {
+		printf("z:%x\tz->l:%x\tz->r:%x\n", z, z->left, z->right);
+	}
 }
 
 void rb_insert_fixup(rbt *T, rbn* z)

@@ -23,11 +23,11 @@ main(void)
 		tmp = rb_search(root.root, rand() % 910216);
 		if (tmp != NULL)
 			rb_delete(&root, tmp);
-		if (tmp != NULL)
-			if (rb_search(root.root, tmp->key)) {
-				printf("error exit");
-				exit(0);
-			}
+		if (rb_search(root.root, tmp->key)) {
+			printf("error exit");
+			exit(0);
+		}
+
 	}
 	return 0;
 }
