@@ -1,6 +1,6 @@
 #define	TRUE	1
 #define	FALSE	0
-#define	t	2
+#define	t	3
 typedef struct B_TREE {
 	short	leaf;
 	unsigned int	n;
