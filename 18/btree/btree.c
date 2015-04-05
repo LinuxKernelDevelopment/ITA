@@ -42,10 +42,16 @@ void b_tree_split_child(btree *x, int i)
 	z->leaf = y->leaf;
 	z->n = t - 1;
 	for (j = 1; j <= t - 1; j++)
+	{
 		z->key[j] = y->key[j + t];
+		y->key[j + t] = 0;
+	}
 	if (!y->leaf)
 		for (j = 1; j <= t; j++)
+		{
 			z->c[j] = y->c[j + t];
+			y->c[j + t] = NULL;
+		}
 	y->n = t - 1;
 	for (j = x->n + 1; j >= i + 1; j--)
 		x->c[j + 1] = x->c[j];
